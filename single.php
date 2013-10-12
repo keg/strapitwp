@@ -15,6 +15,15 @@ get_header(); ?>
                     <h1 class="entry-title"><?php the_title(); ?></h1>
 
                     <div class="entry-content">
+<?php
+//Sample pulling some data from the dfm-wp-data plugin
+//Normally we pull the domian name from the url to know what site we are on setting it manually here
+$domain = "mercurynews";
+//setting the config var with all the values for this domain with the function in the plugin
+$config =DFMDataForWP::retrieveRowFromMasterData('domain', $domain);
+//here is what it looks like
+var_dump($config);
+?>
                         <?php the_content(); ?><?php wp_link_pages(array('before' => __('Pages: '), 'next_or_number' => 'number')); ?><?php the_tags( __('Tags: '), ', ', ''); ?><?php posted_on(); ?>
                     </div><?php edit_post_link(__('Edit this entry'),'','.'); ?>
                 </article><?php comments_template(); ?><?php endwhile; endif; ?><?php post_navigation(); ?>
