@@ -124,6 +124,13 @@
 				'before_title'  => '<h3 class="widget-title">',
 				'after_title'   => '</h3>',
 			) );
+			register_sidebar(array(
+				  'name' => __( 'Left Sidebar', 'html5reset' ),
+				  'id' => 'sidebar-left',
+				  'description' => __( 'Widgets in this area will be shown on the left-hand side.' ),
+				  'before_title' => '<h3 class="widget-title">',
+				  'after_title' => '</h3>'
+				));
 		}
 		add_action( 'widgets_init', 'html5reset_widgets_init' );
 	}
