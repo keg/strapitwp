@@ -114,7 +114,6 @@
 	register_nav_menu( 'primary', __( 'Navigation Menu', 'html5reset' ) );
 
 	// Widgets
-	if ( function_exists('register_sidebar' )) {
 		function html5reset_widgets_init() {
 			register_sidebar( array(
 				'name'          => __( 'Sidebar Widgets', 'html5reset' ),
@@ -123,17 +122,17 @@
 				'after_widget'  => '</aside>',
 				'before_title'  => '<h3 class="widget-title">',
 				'after_title'   => '</h3>',
-			) );
+			));
 			register_sidebar(array(
 				  'name' => __( 'Left Sidebar', 'html5reset' ),
 				  'id' => 'sidebar-left',
-				  'description' => __( 'Widgets in this area will be shown on the left-hand side.' ),
+				  'description' => __( 'Widgets in this area will be shown on the left-hand side on 3-column pages.' ),
 				  'before_title' => '<h3 class="widget-title">',
-				  'after_title' => '</h3>'
+				  'after_title' => '</h3>',
 				));
 		}
 		add_action( 'widgets_init', 'html5reset_widgets_init' );
-	}
+	
 
 	// Navigation - update coming from twentythirteen
 	function post_navigation() {
