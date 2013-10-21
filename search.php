@@ -23,7 +23,7 @@ get_header(); ?>
                 <h2><?php _e('Nothing Found','html5reset'); ?></h2><?php endif; ?>
             </div><!-- end col-md-9 -->
 
-            <aside class="col md-3">
+            <aside class="col md-3" id="right-sidebar">
                 <?php get_sidebar(); ?>
             </aside><!-- end col-md-3 -->
         </div><!-- end container -->

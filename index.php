@@ -43,7 +43,7 @@ get_header(); ?>
 	
 			<?php endif; ?>
 	 	</div><!-- end col-md-9 -->
-		 	<aside class="col md-3">
+		 	<aside class="col md-3" id="right-sidebar">
 			 	<?php get_sidebar(); ?>
 		 	</aside><!-- end col-md-3 -->
 	 	</div><!-- end container -->

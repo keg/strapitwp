@@ -89,3 +89,9 @@ ol.commentlist li.thread-odd {}
 footer {
 	padding: 60px 0 30px 0;
 }
+
+/* widen right sidebar for factbox */
+
+#right-sidebar {
+	padding: 0 5px;
+}
