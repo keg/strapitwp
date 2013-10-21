@@ -5,7 +5,7 @@
  * @since Strapit 1.0
  */
 ?>
- <div id="sidebar">
+ <div id="left-sidebar">
 
     <?php if (function_exists('dynamic_sidebar') && dynamic_sidebar('Left Sidebar')) : else : ?>
     

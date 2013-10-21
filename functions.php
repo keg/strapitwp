@@ -127,8 +127,10 @@
 				  'name' => __( 'Left Sidebar', 'html5reset' ),
 				  'id' => 'sidebar-left',
 				  'description' => __( 'Widgets in this area will be shown on the left-hand side on 3-column pages.' ),
-				  'before_title' => '<h3 class="widget-title">',
-				  'after_title' => '</h3>',
+				'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+				'after_widget'  => '</aside>',
+				'before_title'  => '<h3 class="widget-title">',
+				'after_title'   => '</h3>',
 				));
 		}
 		add_action( 'widgets_init', 'html5reset_widgets_init' );
