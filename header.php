@@ -67,7 +67,7 @@
 	
 	<!-- Respond.js IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
-	  <script src="/_/js/respond.min.js"></script>
+	  <script src="<?php bloginfo('template_directory'); ?>/_/js/respond.min.js"></script>
 	<![endif]-->
 
 	<!-- Application-specific meta tags -->
