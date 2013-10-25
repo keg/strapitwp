@@ -25,9 +25,6 @@
 
 	</div><!-- end container -->
 
-	<?php wp_footer(); ?>
-
-
 <!-- here comes the javascript -->
 
 <!-- jQuery is called via the WordPress-friendly way via functions.php -->
@@ -60,7 +57,7 @@
 
 </script>
 -->
-	
+	<?php wp_footer(); ?>	
 </body>
 
 </html>
