@@ -38,7 +38,6 @@
 <script src="<?php bloginfo('template_directory'); ?>/js/bootstrap.js"></script>
 <script src="http://platform.twitter.com/widgets.js"></script>
 <script src="<?php bloginfo('template_directory'); ?>/js/holder.js"></script>
-<script src="<?php bloginfo('template_directory'); ?>/js/application.js"></script>
 
 <!-- Asynchronous google analytics; this is the official snippet.
 	 Replace UA-XXXXXX-XX with your site's ID and uncomment to enable.
