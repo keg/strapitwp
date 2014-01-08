@@ -1,0 +1,312 @@
+//
+// Mixins -- custom file for new and candidate mixins
+// --------------------------------------------------
+
+// Font size rem to px converter: Converts px to rems with px fallback
+// 
+.font-size(@value) {
+  @pxValue: ~`function(){var a='@{value}'.split("px");return parseInt(a[0])+'px'}()`;
+  @remValue: ~`function(){var a='@{value}'.split("px");return parseInt(a[0])/10+'rem'}()`;
+  font-size: ~"@{pxValue}"; 
+  font-size: ~"@{remValue}";
+}
+
+// Callout
+// -------------------------
+.callout-variant(@state; @border; @bg-color; @text-color) {
+  .callout-@{state},
+  .callout.@{state} {
+    border-left-color: @border;
+    background-color: @bg-color;
+    h1, h2, h3, h4, h5, h6,
+    .h1, .h2, .h3, .h4, .h5, .h6 {
+      color: @text-color;
+    }
+  }
+}
+
+// Radius
+// -------------------------
+.radius(@radius) {
+  border-radius: @radius;
+}
+
+// Border radius
+// If the @border-radius-base (or -small or -large) is set to 0, we do not
+// want a bunch of declarations where border-radius:0; everywhere. 
+// Wrapping the bortder-radius property in this mixin prevents that.
+.border-radius(@radius) when (isnumber(@radius)) and not (@radius = 0) {
+  border-radius: @radius;
+}
+
+
+// Centered container element
+// ------------------------------------------
+// Head's up! Make sure maximum width is set later in a media query.
+// IE8 box model will break if min- and max- widths are set on this element.
+.make-container(@class-name: container) {
+  position: relative;
+  padding: 0 (@grid-gutter-width / 2);
+  margin-right: auto;
+  margin-left: auto;
+  .clearfix();
+  // Fix for nested containers
+  .@{class-name} {
+    width: auto !important;
+  }
+}
+
+// Create a row
+.make-rows(@gutter: @grid-gutter-width) {
+  position: relative;
+  width: auto;
+  margin-right: -(@gutter / 2);
+  margin-left: -(@gutter / 2);
+  .clearfix();
+}
+
+// Grid generator
+// ------------------
+
+// Create custom columns
+.make-columns(@columns: @grid-columns; @size: md) {
+  .colX (@index) when (@index > 0) {
+     .@{size}-@{index} {
+       width: round(percentage(((@index) / @columns)), 5);
+     }
+     .colX(@index - 1);
+   }
+   .colX (0) {}
+   .colX (@columns);
+}
+// Generate offsets & source ordering
+.make-offsets(@columns: @grid-columns) {
+  .offsetX (@index) when (@index > 0) {
+    .offset-@{index} {
+      margin-left: round(percentage(((@index) / @columns)), 5);
+    }
+    .offsetX(@index - 1);
+  }
+  .offsetX (0) {}
+  .offsetX (@columns - 1);
+  .offset-0 {
+    margin-left: 0;
+  }
+  .pushpullX (@index) when (@index > 1) {
+    .push-@{index} {
+      left: round(percentage(((@index) / @columns)), 5);
+    }
+    .pull-@{index} {
+      right: round(percentage(((@index) / @columns)), 5);
+    }
+    .pushpullX(@index - 1);
+  }
+  .pushpullX (0) {}
+  .pushpullX (@columns - 1);
+}
+// Generate targeted offsets & source ordering
+.make-targeted-offsets(@columns: @grid-columns; @size: md) {
+  .offsetX (@index) when (@index > 0) {
+    .@{size}-offset-@{index} {
+      margin-left: round(percentage(((@index) / @columns)), 5);
+    }
+    .offsetX(@index - 1);
+  }
+  .offsetX (0) {}
+  .offsetX (@columns - 1);
+  .@{size}-offset-0 {
+    margin-left: 0;
+  }
+  .pushpullX (@index) when (@index > 1) {
+    .@{size}-push-@{index} {
+      left: round(percentage(((@index) / @columns)), 5);
+    }
+    .@{size}-pull-@{index} {
+      right: round(percentage(((@index) / @columns)), 5);
+    }
+    .pushpullX(@index - 1);
+  }
+  .pushpullX (0) {}
+  .pushpullX (@columns - 1);
+}
+// Generate targeted offsets only
+.make-targeted-offsets-only(@columns: @grid-columns; @size: md) {
+  .offsetX (@index) when (@index > 0) {
+    .@{size}-offset-@{index} {
+      margin-left: round(percentage(((@index) / @columns)), 5);
+    }
+    .offsetX(@index - 1);
+  }
+  .offsetX (0) {}
+  .offsetX (@columns - 1);
+  .@{size}-offset-0 {
+    margin-left: 0;
+  }
+}
+
+// Targeted centering
+.make-targeted-centering(@size: md) {
+  .col {
+    &.@{size}-centered {
+      float: none !important;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    &.@{size}-uncentered {
+      float: left !important;
+      margin-left: 0;
+      margin-right: 0;
+      &.opposite {
+        float: right !important;
+      }
+    }  
+  }
+}
+
+
+// Create the whole thing in one mixin
+#grid {
+  .make-grid (@columns: @grid-columns; @size: md) {
+    .colX (@index) when (@index > 0) {
+       .@{size}-@{index} {
+         width: round(percentage(((@index) / @columns)), 5);
+       }
+       .colX(@index - 1);
+     }
+     .colX (0) {}
+     
+     .offsetX (@index) when (@index > 0) {
+       .offset-@{index} {
+         margin-left: round(percentage(((@index) / @columns)), 5);
+       }
+       .offsetX(@index - 1);
+     }
+     .offsetX (0) {}
+
+ 
+     .pushpullX (@index) when (@index > 1) {
+       .push-@{index} {
+         left: round(percentage(((@index) / @columns)), 5);
+       }
+       .pull-@{index} {
+         right: round(percentage(((@index) / @columns)), 5);
+       }
+       .pushpullX(@index - 1);
+     }
+     .pushpullX (0) {}
+
+    // generate .colX, .offsetX, .pushX and .pullX
+    .colX (@columns);
+    .offsetX (@columns - 1);
+      .offset-0 {
+        margin-left: 0;
+      }
+    .pushpullX (@columns - 1);
+
+    // Centered columns
+    .col .@{size}-centered {
+       float: none !important;
+       margin-left: auto;
+       margin-right: auto;
+     }
+    .col .@{size}-uncentered  {
+      float: left !important;
+      margin-left: 0;
+      margin-right: 0;
+      &.opposite {
+        float: right !important;
+      }
+   }
+   }
+
+  // This option changes the offsets and source ordering to
+  // be targeted by size 
+  .make-targeted-grid (@columns: @grid-columns; @size: md) {
+    .colX (@index) when (@index > 0) {
+       .@{size}-@{index} {
+         width: round(percentage(((@index) / @columns)), 5);
+       }
+       .colX(@index - 1);
+     }
+     .colX (0) {}
+
+     .offsetX (@index) when (@index > 0) {
+       .@{size}-offset-@{index} {
+         margin-left: round(percentage(((@index) / @columns)), 5);
+       }
+       .offsetX(@index - 1);
+     }
+     .offsetX (0) {}
+     .@{size}-offset-0 {
+       margin-left: 0;
+     }
+     .pushpullX (@index) when (@index > 1) {
+       @{size}-push-@{index} {
+         left: round(percentage(((@index) / @columns)), 5);
+       }
+       .@{size}-pull-@{index} {
+         right: round(percentage(((@index) / @columns)), 5);
+       }
+       .pushpullX(@index - 1);
+     }
+     .pushpullX (0) {}
+
+    // generate .colX, .offsetX, .pushX and .pullX
+    .colX (@columns);
+    .offsetX (@columns - 1);
+    .pushpullX (@columns - 1);
+
+    // Centered columns 
+    .col {
+      .@{size}-centered {
+         float: none !important;
+         margin-left: auto;
+         margin-right: auto;
+       }
+      .@{size}-uncentered  {
+        float: left !important;
+        margin-left: 0;
+        margin-right: 0;
+        &.opposite {
+          float: right !important;
+        }
+      }
+    }
+   }
+}
+
+// Block grid mixins
+// ---------------------
+
+.make-block-grid(@columns: @grid-columns; @size: sm) {
+  .blockGrid (@index) when (@index > 0) {
+     .@{size}-block-grid-@{index} {
+     > li {
+         width: round(percentage((1 / @index)), 5);
+         padding: 0 0.625em 1.25em;
+         &:nth-of-type(n) {
+          clear: none; 
+         }
+         &:nth-of-type(@{index}n+1) {
+          clear: both; 
+         }
+       }
+     }
+     .blockGrid(@index - 1);
+   }
+   .blockGrid (0) {}
+   .blockGrid (@columns);
+}
+
+.remove-block-grid-clearing(@columns: @grid-columns; @size: sm) {
+  .clearing (@index) when (@index > 0) {
+     .@{size}-block-grid-@{index} {
+       > li:nth-of-type(@{index}n+1) {
+         clear: none; 
+       }
+     }
+     .clearing(@index - 1);
+   }
+   .clearing (0) {}
+   .clearing (@columns);
+}
