@@ -4,9 +4,10 @@
  * @subpackage DFM-Strapit-Theme
  * @since Strapit 1.0
  */
-?><!doctype html>
-
-<html <?php language_attributes(); ?>>
+?>
+<!DOCTYPE HTML> 
+<!--[if IE 8]>    <html class="no-js lt-ie9" <?php language_attributes(); ?>> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" <?php language_attributes(); ?>> <!--<![endif]-->
 <head id="<?php echo of_get_option('meta_headid'); ?>" data-template-set="html5-reset-wordpress-theme">
     <!-- Meta, title, CSS, favicons, etc. -->
 	<meta charset="<?php bloginfo('charset'); ?>">
