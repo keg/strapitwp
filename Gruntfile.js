@@ -1,24 +1,53 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
   'use strict';
 
+  // Force use of Unix newlines
+  grunt.util.linefeed = '\n';
+
+  RegExp.quote = function (string) {
+    return string.replace(/[-\\^$*+?.()|[\]{}]/g, '\\$&')
+  }
+
+  var fs = require('fs')
+
+  // Project configuration.
   grunt.initConfig({
+
+    // Metadata.
     pkg: grunt.file.readJSON('package.json'),
+
+    banner: '/*!\n' +
+              ' * Strapit WP Theme v<%= pkg.version.strapit %> (<%= pkg.homepage %>)\n' +
+              ' * \n' +
+              ' * Copyright <%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
+              ' * Cobbled together and maintained by the design squad at Digital First Media\n' + 
+              ' */\n'
+
+    csslint: {
+      options: {
+        csslintrc: 'less/.csslintrc'
+      },
+      src: [
+        'css/strapit.css'
+      ]
+    },
 
     less: {
       compileCore: {
         options: {
-          strictMath: true,
+          //strictMath: true,
           sourceMap: true,
           outputSourceFiles: true
         },
         files: {
-          'css/strapit.css': 'less/style.less'
+          'css/strapit.css': 'less/strapit.less'
         }
       },
+
       minify: {
         options: {
           cleancss: true,
-
+          report: 'min'
         },
         files: {
           'css/strapit.min.css': 'css/strapit.css'
@@ -26,51 +55,58 @@ module.exports = function(grunt) {
       }
     },
 
-    concat: {
+    usebanner: {
       dist: {
-        src: [
-          '_/js/functions.js'
-        ],
-        dest: '_/js/functions_bk.js'
+        options: {
+          position: 'top',
+          banner: '<%= banner %>'
+        },
+        files: {
+          src: [
+            'css/strapit.css',
+            'css/strapit.min.css'
+          ]
+        }
       }
     },
 
-    uglify: {
-      build: {
-        src: '_/js/functions_bk.js',
-        dest: '_/js/functions_bk.min.js'
+    csscomb: {
+      sort: {
+        options: {
+          config: 'less/.csscomb.json'
+        },
+        files: {
+          'css/strapit.css': 'css/strapit.css'
+        }
       }
     },
+
     watch: {
       reloader: {
-        files: ['*.html', '*.php'],
+        files: ['/*.php'],
         options: {
           livereload: true
         }
       },
-      styles: {
-        // Which files to watch (all .less files recursively in the less directory)
-        files: ['less/style.less'],
+      less: {
+        files: 'less/strapit.less',
         tasks: ['less'],
         options: {
           livereload: true
         }
-      },
-      scripts: {
-        // Which files to watch (all .less files recursively in the less directory)
-        files: ['_/js/functions.js'],
-        tasks: ['concat', 'uglify'],
-        options: {
-          livereload: true
-        }
       }
-    }
+    },
 
   });
 
-  require('load-grunt-tasks')(grunt);
 
-  // Default Task(s)
-  grunt.registerTask('default', ['watch']);
+  // These plugins provide necessary tasks.
+  require('load-grunt-tasks')(grunt, {scope: 'devDependencies'});
+
+  // CSS distribution task.
+  grunt.registerTask('dist-css', ['less', 'csscomb', 'usebanner']);
+
+  // Default task.
+  grunt.registerTask('default', ['dist-css']);
 
 };
